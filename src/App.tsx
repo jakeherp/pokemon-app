@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from "react"
 import ApolloClient, { gql } from "apollo-boost"
 import { ApolloProvider } from "@apollo/react-hooks"
+import { createGlobalStyle } from "styled-components"
+
+import Loader from "./components/Loader"
+import Header from "./components/Header"
+import List from "./components/List"
+
+const Style = createGlobalStyle`
+	body {
+		background: #f3f3f3;
+		padding: 0;
+		margin: 0;
+		font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	}
+`
+
 const App: React.FC = () => {
 	const [pokemons, setPokemons] = useState([])
 
@@ -21,24 +37,27 @@ const App: React.FC = () => {
 					}
 				`,
 			})
-			.then(result => setPokemons(result.data))
+			.then(result => setPokemons(result.data.pokemons))
 	}, [])
-
-	console.log(pokemons)
 
 	return (
 		<ApolloProvider client={client}>
-			<header>
-				<h1>Headline</h1>
-			</header>
+			<Style />
+			<Header amount={pokemons.length} />
 			<main>
-				<ul>
+				<List>
 					{pokemons.length > 0 ? (
-						pokemons.map((pokemon: any) => <li>{pokemon.name}</li>)
+						pokemons.map((pokemon: any) => (
+							<li key={pokemon.number}>
+								<h3>{pokemon.name}</h3>
+								<img src={pokemon.image} alt={pokemon.name} />
+								<small>#{pokemon.number}</small>
+							</li>
+						))
 					) : (
-						<p>Loading ...</p>
+						<Loader />
 					)}
-				</ul>
+				</List>
 			</main>
 			<footer>&copy; 2019</footer>
 		</ApolloProvider>
