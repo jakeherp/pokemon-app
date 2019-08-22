@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from "react"
 import ApolloClient, { gql } from "apollo-boost"
 import { ApolloProvider } from "@apollo/react-hooks"
-
-const client = new ApolloClient({
-	uri: `https://graphql-pokemon.now.sh`,
-})
-
-client
-	.query({
-		query: gql`
-			{
-				pokemons(first: 151) {
-					name
-					number
-					image
-				}
-			}
-		`,
-	})
-	.then(result => console.log(result))
-
 const App: React.FC = () => {
+	const [pokemons, setPokemons] = useState([])
+
+	const client = new ApolloClient({
+		uri: `https://graphql-pokemon.now.sh`,
+	})
+
+	useEffect(() => {
+		client
+			.query({
+				query: gql`
+					{
+						pokemons(first: 151) {
+							name
+							number
+							image
+						}
+					}
+				`,
+			})
+			.then(result => setPokemons(result.data))
+	}, [])
+
+	console.log(pokemons)
+
 	return (
 		<ApolloProvider client={client}>
 			<header>
@@ -28,7 +33,11 @@ const App: React.FC = () => {
 			</header>
 			<main>
 				<ul>
-					<li>Element</li>
+					{pokemons.length > 0 ? (
+						pokemons.map((pokemon: any) => <li>{pokemon.name}</li>)
+					) : (
+						<p>Loading ...</p>
+					)}
 				</ul>
 			</main>
 			<footer>&copy; 2019</footer>
