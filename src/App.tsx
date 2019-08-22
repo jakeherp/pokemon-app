@@ -17,7 +17,11 @@ const Style = createGlobalStyle`
 	}
 `
 
-const App: React.FC = () => {
+interface IProps {
+	default: boolean
+}
+
+const App = ({ default: IProps }: IProps) => {
 	const [pokemons, setPokemons] = useState([])
 
 	const client = new ApolloClient({
