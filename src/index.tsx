@@ -1,14 +1,16 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { Router } from "@reach/router"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
 import App from "./App"
 import Pokemon from "./Pokemon"
 
 ReactDOM.render(
 	<Router>
-		<App default />
-		<Pokemon path="/:number" />
+		<Switch>
+			<Route exact path="/" component={App} />
+			<Route path="/:slug" component={Pokemon} />
+		</Switch>
 	</Router>,
 	document.getElementById("root"),
 )

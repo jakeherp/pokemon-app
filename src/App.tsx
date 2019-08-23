@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from "react"
-import ApolloClient, { gql } from "apollo-boost"
-import { ApolloProvider } from "@apollo/react-hooks"
-import { createGlobalStyle } from "styled-components"
+import { gql } from "apollo-boost"
+import { Link } from "react-router-dom"
 
+import Layout, { client } from "./components/Layout"
 import Loader from "./components/Loader"
-import Header from "./components/Header"
 import List from "./components/List"
-
-const Style = createGlobalStyle`
-	body {
-		background: #f3f3f3;
-		padding: 0;
-		margin: 0;
-		font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  }
-  
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-`
 
 interface IProps {
 	default: boolean
@@ -28,10 +12,6 @@ interface IProps {
 
 const App = ({ default: IProps }: IProps) => {
 	const [pokemons, setPokemons] = useState([])
-
-	const client = new ApolloClient({
-		uri: `https://graphql-pokemon.now.sh`,
-	})
 
 	useEffect(() => {
 		client
@@ -50,31 +30,23 @@ const App = ({ default: IProps }: IProps) => {
 	}, [])
 
 	return (
-		<ApolloProvider client={client}>
-			<Style />
-			<Header amount={pokemons.length} />
-			<main>
-				<List>
-					{pokemons.length > 0 ? (
-						pokemons.map((pokemon: any) => (
-							<li key={pokemon.number}>
-								<a href="#">
-									<h3>{pokemon.name}</h3>
-									<img
-										src={pokemon.image}
-										alt={pokemon.name}
-									/>
-									<small>#{pokemon.number}</small>
-								</a>
-							</li>
-						))
-					) : (
-						<Loader />
-					)}
-				</List>
-			</main>
-			<footer>&copy; 2019</footer>
-		</ApolloProvider>
+		<Layout>
+			<List>
+				{pokemons.length > 0 ? (
+					pokemons.map((pokemon: any) => (
+						<li key={pokemon.number}>
+							<Link to={`/${pokemon.name}`}>
+								<h3>{pokemon.name}</h3>
+								<img src={pokemon.image} alt={pokemon.name} />
+								<small>#{pokemon.number}</small>
+							</Link>
+						</li>
+					))
+				) : (
+					<Loader />
+				)}
+			</List>
+		</Layout>
 	)
 }
 

@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
 const Head = styled.header`
 	width: 100%;
@@ -13,14 +14,12 @@ const Head = styled.header`
 	}
 `
 
-interface IProps {
-	amount: number
-}
-
-const Header = ({ amount }: IProps) => {
+const Header = () => {
 	return (
 		<Head>
-			<h1>{amount} Pokemons</h1>
+			<h1>
+				<Link to="/">Pokémons</Link>
+			</h1>
 		</Head>
 	)
 }
