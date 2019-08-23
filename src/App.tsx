@@ -14,7 +14,12 @@ const Style = createGlobalStyle`
 		margin: 0;
 		font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-	}
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 `
 
 interface IProps {
@@ -53,9 +58,14 @@ const App = ({ default: IProps }: IProps) => {
 					{pokemons.length > 0 ? (
 						pokemons.map((pokemon: any) => (
 							<li key={pokemon.number}>
-								<h3>{pokemon.name}</h3>
-								<img src={pokemon.image} alt={pokemon.name} />
-								<small>#{pokemon.number}</small>
+								<a href="#">
+									<h3>{pokemon.name}</h3>
+									<img
+										src={pokemon.image}
+										alt={pokemon.name}
+									/>
+									<small>#{pokemon.number}</small>
+								</a>
 							</li>
 						))
 					) : (

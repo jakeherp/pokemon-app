@@ -29,6 +29,7 @@ const List = styled.ul`
 			background: #fff;
 			border: 1px solid #eee;
 			border-radius: 5px;
+			padding: 1rem;
 		}
 	}
 
@@ -36,6 +37,7 @@ const List = styled.ul`
 		width: 80%;
 		height: auto;
 		margin: 0 auto;
+		display: block;
 	}
 `
 
