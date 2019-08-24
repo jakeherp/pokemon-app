@@ -108,6 +108,7 @@ interface IPokemon {
 const Pokemon = ({ match }: any) => {
 	const [pokemon, setPokemon] = useState<IPokemon | undefined>(undefined)
 	const [current, setCurrent] = useState<string>("")
+	const [loading, setLoading] = useState<boolean>(true)
 
 	useEffect(() => {
 		client
@@ -163,6 +164,7 @@ const Pokemon = ({ match }: any) => {
 			.then(result => {
 				setPokemon(result.data.pokemon)
 				setCurrent(result.data.pokemon.name)
+				setLoading(false)
 			})
 	}, [current])
 
@@ -170,7 +172,7 @@ const Pokemon = ({ match }: any) => {
 
 	return (
 		<Layout>
-			{pokemon !== undefined ? (
+			{!loading && pokemon !== undefined ? (
 				<Container>
 					<Headline>
 						{pokemon.name} <span>#{pokemon.number}</span>
@@ -219,7 +221,10 @@ const Pokemon = ({ match }: any) => {
 									<li key={evo.number}>
 										<Link
 											to={`/${evo.name}/`}
-											onClick={() => setCurrent(evo.name)}
+											onClick={() => {
+												setLoading(true)
+												setCurrent(evo.name)
+											}}
 										>
 											<h3>{evo.name}</h3>
 											<img
