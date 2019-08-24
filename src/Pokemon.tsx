@@ -107,7 +107,6 @@ interface IPokemon {
 
 const Pokemon = ({ match }: any) => {
 	const [pokemon, setPokemon] = useState<IPokemon | undefined>(undefined)
-	const [current, setCurrent] = useState<string>("")
 	const [loading, setLoading] = useState<boolean>(true)
 
 	useEffect(() => {
@@ -163,12 +162,9 @@ const Pokemon = ({ match }: any) => {
 			})
 			.then(result => {
 				setPokemon(result.data.pokemon)
-				setCurrent(result.data.pokemon.name)
 				setLoading(false)
 			})
-	}, [current])
-
-	pokemon && console.log(pokemon.name)
+	}, [match.params.slug])
 
 	return (
 		<Layout>
@@ -223,7 +219,6 @@ const Pokemon = ({ match }: any) => {
 											to={`/${evo.name}/`}
 											onClick={() => {
 												setLoading(true)
-												setCurrent(evo.name)
 											}}
 										>
 											<h3>{evo.name}</h3>
